@@ -3,21 +3,22 @@ import { APP_URL } from "../../../lib/constants";
 
 export async function GET() {
   const farcasterConfig = {
-    // TODO: Add account association
     frame: {
       version: "1",
-      name: "Monad Farcaster MiniApp Template",
-      iconUrl: `${APP_URL}/images/icon.png`,
-      homeUrl: `${APP_URL}`,
-      imageUrl: `${APP_URL}/images/feed.png`,
-      screenshotUrls: [],
-      tags: ["monad", "farcaster", "miniapp", "template"],
-      primaryCategory: "developer-tools",
-      buttonTitle: "Launch Template",
-      splashImageUrl: `${APP_URL}/images/splash.png`,
-      splashBackgroundColor: "#ffffff",
-      webhookUrl: `${APP_URL}/api/webhook`,
-    },
+      name: "Baitshifters",
+      iconUrl: `${APP_URL}/images/logo.png`,
+      homeUrl: `${APP_URL}/game`,
+      splashImageUrl: `${APP_URL}/images/logo.png`,
+      splashBackgroundColor: "#200052",
+      subtitle: "Test your brain power with Monad knowledge!",
+      description: "Join a fun and fast-paced quiz with Baitshifters.",
+      primaryCategory: "games",
+      tags: ["game", "monad", "quiz", "farcaster"],
+      tagline: "Test your brain power with Monad knowledge!",
+      ogTitle: "Baitshifters",
+      ogDescription: "Join a fun and fast-paced quiz with Baitshifters.",
+      ogImageUrl: `${APP_URL}/images/og.png`
+    }
   };
 
   return NextResponse.json(farcasterConfig);
