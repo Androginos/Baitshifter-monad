@@ -1,0 +1,33 @@
+[
+  {
+    "inputs": [
+      { "internalType": "string", "name": "displayName", "type": "string" },
+      { "internalType": "string", "name": "username", "type": "string" },
+      { "internalType": "uint256", "name": "fid", "type": "uint256" },
+      { "internalType": "uint256", "name": "score", "type": "uint256" }
+    ],
+    "name": "submitScore",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getMyScore",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "string", "name": "displayName", "type": "string" },
+          { "internalType": "string", "name": "username", "type": "string" },
+          { "internalType": "uint256", "name": "fid", "type": "uint256" },
+          { "internalType": "uint256", "name": "score", "type": "uint256" }
+        ],
+        "internalType": "struct Baitshifters.Player",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+] 
