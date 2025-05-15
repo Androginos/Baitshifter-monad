@@ -162,7 +162,7 @@ export default function Home() {
   const [score, setScore] = useState<number>(0);
   const [brain, setBrain] = useState<number>(100);
   // Karakter görseli level'a göre
-  const characterImage = `/images/character/level${level}.png`;
+  const characterImage = `/images/level${level}.png`;
   const characterMaxHealth = 100;
   const characterHealth = 100; // Şimdilik sabit
 
