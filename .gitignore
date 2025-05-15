@@ -38,4 +38,6 @@ next-env.d.ts
 baitshifters.zip
 *.zip
 
+Baitshifters-archive/
+
 .env
