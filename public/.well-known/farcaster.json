@@ -1,0 +1,18 @@
+{
+  "frame": {
+    "version": "1",
+    "name": "Baitshifters",
+    "iconUrl": "https://baitshifter-monad.vercel.app/icon.png",
+    "homeUrl": "https://baitshifter-monad.vercel.app/game",
+    "splashImageUrl": "https://baitshifter-monad.vercel.app/logo.png",
+    "splashBackgroundColor": "#200052",
+    "subtitle": "Test your brain power!",
+    "description": "Join a fun and fast-paced quiz with Baitshifters.",
+    "primaryCategory": "games",
+    "tags": ["game", "monad", "quiz", "farcaster"],
+    "tagline": "Test your brain power!",
+    "ogTitle": "Baitshifters",
+    "ogDescription": "Join a fun and fast-paced quiz with Baitshifters.",
+    "ogImageUrl": "https://baitshifter-monad.vercel.app/og.png"
+  }
+} 
