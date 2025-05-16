@@ -157,7 +157,8 @@ type FlashType = 'success' | 'fail' | null;
 
 // Level'a göre süre ayarlanacak (saniye cinsinden)
 const getLevelTime = (level: number) => {
-  return Math.max(0.5, 2 - (level - 1) * 0.2);
+  // Level 1'de 3.5 saniye, her level'da %15 azalma
+  return Math.max(1.5, 3.5 * Math.pow(0.85, level - 1));
 };
 
 export default function Home() {
