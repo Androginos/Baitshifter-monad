@@ -1,4 +1,3 @@
-"use client";
 import App from "@/components/pages/app";
 import { sdk } from '@farcaster/frame-sdk';
 import { Metadata } from "next";
