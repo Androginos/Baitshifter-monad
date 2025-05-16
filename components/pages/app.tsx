@@ -103,6 +103,34 @@ const COLOR_PALETTE: string[] = [
   "#B2B1B9", // açık mat gri
 ];
 
+// Eğlenceli default nicknameler
+const DEFAULT_NICKNAMES = [
+  "MonadMaster",
+  "BaitHunter",
+  "CryptoNinja",
+  "BlockchainBoss",
+  "Web3Warrior",
+  "SmartContractSamurai",
+  "DeFiDragon",
+  "NFTNinja",
+  "CryptoCrusader",
+  "BlockchainBandit",
+  "Web3Wizard",
+  "DeFiDaredevil",
+  "SmartContractSorcerer",
+  "NFTKnight",
+  "CryptoChampion",
+  "BlockchainBaron",
+  "Web3Wanderer",
+  "DeFiDynamo",
+  "SmartContractSage",
+  "NFTNomad"
+];
+
+function getRandomNickname(): string {
+  return DEFAULT_NICKNAMES[Math.floor(Math.random() * DEFAULT_NICKNAMES.length)];
+}
+
 function shuffle<T>(array: T[]): T[] {
   // Fisher-Yates shuffle
   let arr = array.slice();
@@ -139,8 +167,9 @@ export default function Home() {
   const [statements, setStatements] = useState<{ all: Statement[]; trueId: number }>(() => getRandomStatements([]));
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const { context, actions } = useMiniAppContext();
-  // Kullanıcı adı (displayName)
-  const username = context?.user?.displayName || "kullanici";
+  const isFrame = !!context; // context varsa frame içindeyiz demektir
+  // Kullanıcı adı (displayName veya rastgele nickname)
+  const [username, setUsername] = useState<string>(context?.user?.displayName || getRandomNickname());
   // Kullanıcı profil resmi (Warpcast pfpUrl)
   const userPfp = context?.user?.pfpUrl || null;
   // Level state
@@ -182,6 +211,32 @@ export default function Home() {
   const { data: txHash, isPending: isTxPending, writeContract } = useWriteContract();
   const [txSent, setTxSent] = useState(false);
 
+  // Arka plan boyutlarını belirle
+  const getBackgroundSize = () => {
+    if (isFrame) {
+      return { width: '1200px', minHeight: '100vh' }; // Warpcast frame için minHeight
+    }
+    return { width: '600px', height: '1000px' }; // Vercel'de orta boy sabit yükseklik
+  };
+
+  const backgroundSize = getBackgroundSize();
+
+  // Arka plan komponenti
+  const BackgroundImage = () => (
+    <div className="fixed inset-0 w-full h-full flex items-center justify-center z-0">
+      <div className="relative" style={{ 
+        width: backgroundSize.width, 
+        ...(isFrame ? { minHeight: '100vh' } : { height: backgroundSize.height })
+      }}>
+        <img
+          src="/images/baitshifter-main.png"
+          alt="Baitshifter Main Background"
+          className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none select-none"
+        />
+      </div>
+    </div>
+  );
+
   useEffect(() => {
     if (isFirstQuestion) {
       setShowQuestionMarks(false);
@@ -217,6 +272,13 @@ export default function Home() {
       setEndTime(Date.now());
     }
   }, [gameWon, endTime]);
+
+  // Oyun başladığında nickname'i güncelle
+  useEffect(() => {
+    if (gameStarted && !context?.user?.displayName) {
+      setUsername(getRandomNickname());
+    }
+  }, [gameStarted, context?.user?.displayName]);
 
   function handleBoxClick(id: number) {
     if (flash || gameWon) return;
@@ -309,7 +371,6 @@ export default function Home() {
   }
 
   if (gameStarted && (gameOver || gameWon)) {
-    // Oyun sonu overlay ekranı
     return (
       <div className="relative min-h-screen w-full flex flex-col items-center justify-center" style={{ backgroundColor: "#200052" }}>
         {/* Sol üstte modern, küçük, opak ok butonu */}
@@ -323,10 +384,6 @@ export default function Home() {
             <path d="M13 16L7 10L13 4" stroke="#FBFAF9" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
-        {/* Oyun ekranı arka planda opak */}
-        <div className="absolute inset-0 z-0" style={{ filter: 'blur(2px)', opacity: 0.4, pointerEvents: 'none' }}>
-          <div className="w-full h-full bg-[#200052]" />
-        </div>
         {/* Overlay içerik */}
         <div className="relative z-10 flex flex-col items-center justify-center px-6 py-8 rounded-2xl shadow-2xl" style={{ background: 'rgba(20, 0, 40, 0.98)', minWidth: 320, maxWidth: 340 }}>
           {/* Profil resmi */}
@@ -374,8 +431,6 @@ export default function Home() {
             </button>
           )}
         </div>
-        {/* Sağ alt Add Frame butonu */}
-        <AddFrameButton />
       </div>
     );
   }
@@ -510,8 +565,6 @@ export default function Home() {
             />
           </div>
         </div>
-        {/* Sağ alt Add Frame butonu */}
-        <AddFrameButton />
       </div>
     );
   }
@@ -519,14 +572,8 @@ export default function Home() {
   // Ana ekran kodu değişmedi
   return (
     <div className="relative min-h-screen w-full flex items-start justify-center" style={{ backgroundColor: "#200052" }}>
-      {/* Arka plan görseli */}
-      <img
-        src="/images/baitshifter-main.png"
-        alt="Baitshifter Main Background"
-        className="absolute inset-0 w-full h-full object-cover z-0 opacity-80 pointer-events-none select-none"
-        style={{ minHeight: '100vh' }}
-      />
-      <div className="mt-0 z-10 w-full max-w-xl flex flex-col items-center justify-start rounded-xl border-4" style={{ borderColor: "#200052" }}>
+      <BackgroundImage />
+      <div className="relative z-10 w-full max-w-xl flex flex-col items-center justify-start rounded-xl border-4" style={{ borderColor: "#200052" }}>
         {/* Start Game butonu - margin ayarı için mt-10 ve mb-8 ile oynayabilirsin */}
         <button className="w-full text-2xl font-bold py-3 px-4 rounded-lg transition-colors mb-8 mt-40" style={{ background: 'rgba(160,5,93,0.85)', color: '#FBFAF9' }} onClick={() => setGameStarted(true)}>
           START GAME
