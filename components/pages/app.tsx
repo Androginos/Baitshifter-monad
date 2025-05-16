@@ -5,6 +5,7 @@ import { useMiniAppContext } from "@/hooks/use-miniapp-context";
 import { useWriteContract } from "wagmi";
 import { monadTestnet } from "viem/chains";
 import abi from "@/contracts/BaitshiftersABI.json";
+import { sdk } from '@farcaster/frame-sdk';
 
 // Doğru ve yanlış önermeler (id ile)
 type Statement = { id: number; text: string };
@@ -306,6 +307,24 @@ export default function Home() {
     setTxSent(true);
   }
 
+  // Sağ alt köşede Add Frame butonu
+  const AddFrameButton = () => (
+    <button
+      onClick={async () => {
+        try {
+          await sdk.actions.addFrame();
+        } catch (e) {
+          // Hata yönetimi
+        }
+      }}
+      title="Mini App'i Warpcast'e ekle"
+      className="fixed bottom-6 right-6 z-50 bg-[#836EF9] hover:bg-[#A0055D] text-white rounded-full shadow-lg p-3 transition-all duration-200 flex items-center justify-center"
+      style={{ minWidth: 44, minHeight: 44, boxShadow: '0 4px 16px rgba(32,0,82,0.18)' }}
+    >
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M12 5v14m7-7H5" stroke="#fff" strokeWidth="2.2" strokeLinecap="round"/></svg>
+    </button>
+  );
+
   if (gameStarted && (gameOver || gameWon)) {
     // Oyun sonu overlay ekranı
     return (
@@ -372,6 +391,8 @@ export default function Home() {
             </button>
           )}
         </div>
+        {/* Sağ alt Add Frame butonu */}
+        <AddFrameButton />
       </div>
     );
   }
@@ -506,6 +527,8 @@ export default function Home() {
             />
           </div>
         </div>
+        {/* Sağ alt Add Frame butonu */}
+        <AddFrameButton />
       </div>
     );
   }
@@ -532,6 +555,8 @@ export default function Home() {
           </div>
         </div>
       </div>
+      {/* Sağ alt Add Frame butonu */}
+      <AddFrameButton />
     </div>
   );
 }
