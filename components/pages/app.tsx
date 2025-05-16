@@ -167,9 +167,9 @@ export default function Home() {
   const [statements, setStatements] = useState<{ all: Statement[]; trueId: number }>(() => getRandomStatements([]));
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const { context, actions } = useMiniAppContext();
-  const isFrame = !!context; // context varsa frame içindeyiz demektir
-  // Kullanıcı adı (displayName veya rastgele nickname)
-  const [username, setUsername] = useState<string>(context?.user?.displayName || getRandomNickname());
+  const isFrame = !!context;
+  // Warpcast username'i veya Testoor
+  const username = context?.user?.username || "Testoor";
   // Kullanıcı profil resmi (Warpcast pfpUrl)
   const userPfp = context?.user?.pfpUrl || null;
   // Level state
@@ -237,19 +237,6 @@ export default function Home() {
     </div>
   );
 
-  useEffect(() => {
-    if (isFirstQuestion) {
-      setShowQuestionMarks(false);
-      return;
-    }
-    setLevelTime(getLevelTime(level));
-    setShowQuestionMarks(false);
-    const timer = setTimeout(() => {
-      setShowQuestionMarks(true);
-    }, levelTime * 1000);
-    return () => clearTimeout(timer);
-  }, [level, statements, isFirstQuestion]);
-
   // Oyun başladığında zamanı başlat
   useEffect(() => {
     if (gameStarted) {
@@ -273,12 +260,18 @@ export default function Home() {
     }
   }, [gameWon, endTime]);
 
-  // Oyun başladığında nickname'i güncelle
   useEffect(() => {
-    if (gameStarted && !context?.user?.displayName) {
-      setUsername(getRandomNickname());
+    if (isFirstQuestion) {
+      setShowQuestionMarks(false);
+      return;
     }
-  }, [gameStarted, context?.user?.displayName]);
+    setLevelTime(getLevelTime(level));
+    setShowQuestionMarks(false);
+    const timer = setTimeout(() => {
+      setShowQuestionMarks(true);
+    }, levelTime * 1000);
+    return () => clearTimeout(timer);
+  }, [level, statements, isFirstQuestion]);
 
   function handleBoxClick(id: number) {
     if (flash || gameWon) return;
@@ -569,7 +562,7 @@ export default function Home() {
     );
   }
 
-  // Ana ekran kodu değişmedi
+  // Ana ekran kodu
   return (
     <div className="relative min-h-screen w-full flex items-start justify-center" style={{ backgroundColor: "#200052" }}>
       <BackgroundImage />
